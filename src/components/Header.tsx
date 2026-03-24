@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
@@ -8,32 +9,29 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import Link from "next/link";
-import { addMonths, subMonths } from "date-fns";
+import { usePathname } from "next/navigation";
 
 type PropsType = {
   paramsDate: Date;
+  prevURL: string;
+  nextURL: string;
 };
+
 const Header = (props: PropsType) => {
-  const { paramsDate } = props;
+  const pathname = usePathname();
+
+  const { paramsDate, prevURL, nextURL } = props;
 
   const year = paramsDate.getFullYear();
   const month = paramsDate.getMonth() + 1;
-
-  const prevParamsDate = subMonths(paramsDate, 1);
-  const nextParamsDate = addMonths(paramsDate, 1);
-
-  const prevYear = prevParamsDate.getFullYear();
-  const prevMonth = prevParamsDate.getMonth() + 1;
-
-  const nextYear = nextParamsDate.getFullYear();
-  const nextMonth = nextParamsDate.getMonth() + 1;
+  const day = paramsDate.getDate();
 
   return (
     <div>
       <header className="flex h-20 justify-between">
         <div className="flex items-center gap-10">
           <span className="ml-10 hidden text-2xl sm:block">
-            Next.jsカレンダー
+            Next.js カレンダー
           </span>
           <Link
             href={"/"}
@@ -44,13 +42,13 @@ const Header = (props: PropsType) => {
 
           <div>
             <Link
-              href={`/month/${prevYear}/${prevMonth}`}
+              href={prevURL}
               className="rounded-full px-3 py-2 text-xl font-bold hover:bg-blue-100"
             >
               &lt;
             </Link>
             <Link
-              href={`/month/${nextYear}/${nextMonth}`}
+              href={nextURL}
               className="rounded-full px-3 py-2 text-xl font-bold hover:bg-blue-100"
             >
               &gt;
@@ -67,14 +65,24 @@ const Header = (props: PropsType) => {
                 variant="outline"
                 className="mr-5 rounded-full border-gray-500 p-5"
               >
-                月
+                {pathname === "/" && "月"}
+                {pathname.includes("/month") && "月"}
+                {pathname.includes("/week") && "週"}
                 <span className="ml-1 h-1 w-2 bg-gray-900 [clip-path:polygon(0_0,100%_0%,50%_100%)]"></span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuGroup>
-                <DropdownMenuItem>週</DropdownMenuItem>
-                <DropdownMenuItem>月</DropdownMenuItem>
+                <Link href={`/week/${year}/${month}/${day}`}>
+                  <DropdownMenuItem className="cursor-pointer">
+                    週
+                  </DropdownMenuItem>
+                </Link>
+                <Link href={`/month/${year}/${month}/`}>
+                  <DropdownMenuItem className="cursor-pointer">
+                    月
+                  </DropdownMenuItem>
+                </Link>
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>

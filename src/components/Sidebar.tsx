@@ -9,28 +9,21 @@ import { Button } from "./ui/button";
 import { Plus } from "lucide-react";
 import { DAY_OF_THE_WEEK } from "@/constants/dayOfTheWeek";
 import clsx from "clsx";
-import { addMonths, isToday, subMonths } from "date-fns";
+import { isToday } from "date-fns";
 import Link from "next/link";
 
 type PropsType = {
   calendar: (Date | undefined)[];
   paramsDate: Date;
+  prevURL: string;
+  nextURL: string;
 };
 
 const Sidebar = (props: PropsType) => {
-  const { calendar, paramsDate } = props;
+  const { calendar, paramsDate, prevURL, nextURL } = props;
 
   const year = paramsDate.getFullYear();
   const month = paramsDate.getMonth() + 1;
-
-  const prevParamsDate = subMonths(paramsDate, 1);
-  const nextParamsDate = addMonths(paramsDate, 1);
-
-  const prevYear = prevParamsDate.getFullYear();
-  const prevMonth = prevParamsDate.getMonth() + 1;
-
-  const nextYear = nextParamsDate.getFullYear();
-  const nextMonth = nextParamsDate.getMonth() + 1;
 
   return (
     <aside className="w-70">
@@ -59,13 +52,13 @@ const Sidebar = (props: PropsType) => {
           </span>
           <div>
             <Link
-              href={`/month/${prevYear}/${prevMonth}`}
+              href={prevURL}
               className="rounded-full px-3 py-2 font-semibold hover:bg-blue-100"
             >
               &lt;
             </Link>
             <Link
-              href={`/month/${nextYear}/${nextMonth}`}
+              href={nextURL}
               className="rounded-full px-3 py-2 font-semibold hover:bg-blue-100"
             >
               &gt;

@@ -5,7 +5,7 @@ import { isToday } from "date-fns";
 type PropsType = {
   calendar: (Date | undefined)[];
 };
-const MonthCalendar = (props: PropsType) => {
+const MonthlyCalendar = (props: PropsType) => {
   const { calendar } = props;
 
   return (
@@ -33,4 +33,4 @@ const MonthCalendar = (props: PropsType) => {
   );
 };
 
-export default MonthCalendar;
+export default MonthlyCalendar;
