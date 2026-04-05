@@ -1,6 +1,9 @@
 import { isValid } from "date-fns";
 import z from "zod";
 
+const MIN_YEAR = 1000;
+const MAX_YEAR = 9999;
+
 export const pathParamsYearSchema = z
   .string()
   .refine((val) => !isNaN(parseInt(val)), {
@@ -10,8 +13,8 @@ export const pathParamsYearSchema = z
   .pipe(
     z
       .number()
-      .min(1000, { message: "西暦の下限を超えています" })
-      .max(9999, { message: "西暦の上限を超えています" }),
+      .min(MIN_YEAR, { message: "西暦の下限を下回っています" })
+      .max(MAX_YEAR, { message: "西暦の上限を超えています" }),
   );
 
 export const pathParamsMonthSchema = z
@@ -21,8 +24,7 @@ export const pathParamsMonthSchema = z
   .pipe(
     z
       .number()
-      .min(1, { message: "月の下限を超えています" })
-      .max(12, { message: "月の上限を超えています" }),
+      .refine((val) => val >= 1 && val <= 12, { message: "月が不正な値です" }),
   );
 
 export const pathParamsDaySchema = z
@@ -32,8 +34,7 @@ export const pathParamsDaySchema = z
   .pipe(
     z
       .number()
-      .min(1, { message: "日の下限を超えています" })
-      .max(31, { message: "日の上限を超えています" }),
+      .refine((val) => val >= 1 && val <= 31, { message: "日が不正な値です" }),
   );
 
 // 2月30日のような存在しない日付か確認する

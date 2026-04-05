@@ -1,16 +1,10 @@
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { Button } from "./ui/button";
-import { Plus } from "lucide-react";
+"use client";
+
 import { DAY_OF_THE_WEEK } from "@/constants/dayOfTheWeek";
 import clsx from "clsx";
 import { isToday } from "date-fns";
 import Link from "next/link";
+import CreateScheduleForm from "./CreateScheduleForm";
 
 type PropsType = {
   calendar: (Date | undefined)[];
@@ -27,23 +21,7 @@ const Sidebar = (props: PropsType) => {
 
   return (
     <aside className="w-70">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="outline"
-            className="mt-2 ml-5 rounded-xl p-6 shadow-sm"
-          >
-            <Plus />
-            作成
-            <span className="ml-1 h-1 w-2 bg-gray-900 [clip-path:polygon(0_0,100%_0%,50%_100%)]"></span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuGroup>
-            <DropdownMenuItem>予定</DropdownMenuItem>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <CreateScheduleForm />
 
       <div className="mx-8 mt-5">
         <div className="flex items-center justify-between text-sm">
