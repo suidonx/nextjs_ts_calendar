@@ -12,7 +12,7 @@ const WeeklyCalendar = (props: PropsType) => {
   return (
     <main className="mb-5 grid flex-1 grid-cols-7 rounded-full">
       {calendar.map((day, index) => (
-        <div key={index} className="border bg-white pt-1">
+        <div key={index} className="overflow-y-auto border bg-white pt-1">
           <div className="mt-1 text-center text-[12px]">
             {DAY_OF_THE_WEEK[index]}
           </div>
