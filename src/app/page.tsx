@@ -1,5 +1,5 @@
 import Header from "@/components/Header";
-import MonthCalendar from "@/components/MonthlyCalendar";
+import MonthlyCalendar from "@/components/MonthlyCalendar";
 import Sidebar from "@/components/Sidebar";
 import {
   getMonthlyCalendar,
@@ -9,8 +9,12 @@ import {
 } from "@/utils/calendar";
 
 export default function Home() {
-  const calendar = getMonthlyCalendar();
   const today = getToday();
+
+  const calendar = getMonthlyCalendar(
+    today.getFullYear(),
+    today.getMonth() + 1,
+  );
 
   const prevURL = getMonthPrevURL(today);
   const nextURL = getMonthNextURL(today);
@@ -26,7 +30,7 @@ export default function Home() {
           prevURL={prevURL}
           nextURL={nextURL}
         />
-        <MonthCalendar calendar={calendar} />
+        <MonthlyCalendar calendar={calendar} />
       </div>
     </div>
   );

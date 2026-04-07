@@ -19,13 +19,17 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { MAX_DATE_STRING, MIN_DATE_STRING } from "@/constants/scheduleForm";
+import {
+  MAX_DATE_STRING,
+  MAX_LENGTH_TITLE,
+  MIN_DATE_STRING,
+} from "@/constants/scheduleForm";
 import { useSchedule } from "@/hooks/useSchedule";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createScheduleSchema } from "@/schemas/scheduleSchemas";
 import z from "zod";
 
-const CreateScheduleForm = () => {
+const CreateScheduleModal = () => {
   const { schedules, setSchedules } = useSchedule();
 
   const form = useForm({
@@ -34,7 +38,7 @@ const CreateScheduleForm = () => {
   });
 
   const onSubmit = (data: z.infer<typeof createScheduleSchema>) => {
-    setSchedules([...schedules, { ...data }]);
+    setSchedules([...schedules, { id: crypto.randomUUID(), ...data }]);
   };
 
   return (
@@ -69,7 +73,7 @@ const CreateScheduleForm = () => {
                     aria-invalid={fieldState.invalid}
                     placeholder="タイトルを追加"
                     autoComplete="off"
-                    maxLength={30}
+                    maxLength={MAX_LENGTH_TITLE}
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -113,4 +117,4 @@ const CreateScheduleForm = () => {
   );
 };
 
-export default CreateScheduleForm;
+export default CreateScheduleModal;

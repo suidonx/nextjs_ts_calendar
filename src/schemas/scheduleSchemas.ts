@@ -1,4 +1,8 @@
-import { MAX_DATE_STRING, MIN_DATE_STRING } from "@/constants/scheduleForm";
+import {
+  MAX_DATE_STRING,
+  MAX_LENGTH_TITLE,
+  MIN_DATE_STRING,
+} from "@/constants/scheduleForm";
 import { isValid, parseISO } from "date-fns";
 import z from "zod";
 
@@ -7,7 +11,7 @@ export const createScheduleSchema = z.object({
     .string()
     .trim()
     .min(1, { message: "タイトルを入力してください" })
-    .max(30, { message: "30文字以内で入力してください" }),
+    .max(MAX_LENGTH_TITLE, { message: "30文字以内で入力してください" }),
   scheduledAt: z
     .string()
     .min(1, { message: "日付を入力してください" })

@@ -4,10 +4,10 @@ import { DAY_OF_THE_WEEK } from "@/constants/dayOfTheWeek";
 import clsx from "clsx";
 import { isToday } from "date-fns";
 import Link from "next/link";
-import CreateScheduleForm from "./CreateScheduleForm";
+import CreateScheduleModal from "./CreateScheduleModal";
 
 type PropsType = {
-  calendar: (Date | undefined)[];
+  calendar: (Date | null)[];
   paramsDate: Date;
   prevURL: string;
   nextURL: string;
@@ -21,7 +21,7 @@ const Sidebar = (props: PropsType) => {
 
   return (
     <aside className="w-70">
-      <CreateScheduleForm />
+      <CreateScheduleModal />
 
       <div className="mx-8 mt-5">
         <div className="flex items-center justify-between text-sm">
