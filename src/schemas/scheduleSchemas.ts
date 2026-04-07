@@ -6,12 +6,14 @@ import {
 import { isValid, parseISO } from "date-fns";
 import z from "zod";
 
+export const scheduleTitleSchema = z
+  .string()
+  .trim()
+  .min(1, { message: "タイトルを入力してください" })
+  .max(MAX_LENGTH_TITLE, { message: "30文字以内で入力してください" });
+
 export const createScheduleSchema = z.object({
-  title: z
-    .string()
-    .trim()
-    .min(1, { message: "タイトルを入力してください" })
-    .max(MAX_LENGTH_TITLE, { message: "30文字以内で入力してください" }),
+  title: scheduleTitleSchema,
   scheduledAt: z
     .string()
     .min(1, { message: "日付を入力してください" })
@@ -48,4 +50,8 @@ export const createScheduleSchema = z.object({
     .refine((date) => isValid(date), {
       message: "正しく日付に変換できませんでした",
     }),
+});
+
+export const updateScheduleTitleSchema = z.object({
+  title: scheduleTitleSchema,
 });

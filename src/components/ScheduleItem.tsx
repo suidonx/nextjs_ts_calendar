@@ -17,7 +17,11 @@ import { Pencil, Save, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { MAX_LENGTH_TITLE } from "@/constants/scheduleForm";
 import { useSchedule } from "@/hooks/useSchedule";
-import { toast } from "sonner";
+import { updateScheduleTitleSchema } from "@/schemas/scheduleSchemas";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import z from "zod";
+import { Field, FieldError, FieldGroup } from "./ui/field";
 
 type PropsType = {
   schedule: Schedule;
@@ -29,7 +33,17 @@ const ScheduleItem = (props: PropsType) => {
   const { updateScheduleTitle, deleteSchedule } = useSchedule();
 
   const [isEdit, setIsEdit] = useState(false);
-  const [title, setTitle] = useState(schedule.title);
+
+  const form = useForm({
+    resolver: zodResolver(updateScheduleTitleSchema),
+    defaultValues: { title: schedule.title },
+  });
+
+  const onSubmit = (data: z.infer<typeof updateScheduleTitleSchema>) => {
+    const { title } = data;
+    updateScheduleTitle(schedule, title);
+    setIsEdit(false);
+  };
 
   return (
     <Popover>
@@ -49,24 +63,31 @@ const ScheduleItem = (props: PropsType) => {
             ) : (
               <form
                 id="updateTitleForm"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  updateScheduleTitle(schedule, title);
-                  setIsEdit(false);
-                  toast.success("タイトルを更新しました", {
-                    className: "bg-red-500 text-white",
-                    position: "top-center",
-                  });
-                }}
-                className="flex gap-1"
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="flex flex-1 gap-1"
               >
-                <Input
-                  placeholder="タイトルを追加"
-                  className="w-90"
-                  maxLength={MAX_LENGTH_TITLE}
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
+                <FieldGroup>
+                  <Controller
+                    name="title"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <Input
+                          {...field}
+                          id="title"
+                          aria-invalid={fieldState.invalid}
+                          placeholder="タイトルを追加"
+                          autoComplete="off"
+                          className="w-90"
+                          maxLength={MAX_LENGTH_TITLE}
+                        />
+                        {fieldState.invalid && (
+                          <FieldError errors={[fieldState.error]} />
+                        )}
+                      </Field>
+                    )}
+                  />
+                </FieldGroup>
                 <button
                   type="submit"
                   form="updateTitleForm"
