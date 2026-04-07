@@ -17,6 +17,7 @@ import { Pencil, Save, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { MAX_LENGTH_TITLE } from "@/constants/scheduleForm";
 import { useSchedule } from "@/hooks/useSchedule";
+import { toast } from "sonner";
 
 type PropsType = {
   schedule: Schedule;
@@ -52,6 +53,10 @@ const ScheduleItem = (props: PropsType) => {
                   e.preventDefault();
                   updateScheduleTitle(schedule, title);
                   setIsEdit(false);
+                  toast.success("タイトルを更新しました", {
+                    className: "bg-red-500 text-white",
+                    position: "top-center",
+                  });
                 }}
                 className="flex gap-1"
               >
@@ -86,7 +91,9 @@ const ScheduleItem = (props: PropsType) => {
                   <button
                     type="button"
                     className="cursor-pointer"
-                    onClick={() => deleteSchedule(schedule)}
+                    onClick={() => {
+                      deleteSchedule(schedule);
+                    }}
                   >
                     <Trash2 size={20} className="text-red-500" />
                   </button>

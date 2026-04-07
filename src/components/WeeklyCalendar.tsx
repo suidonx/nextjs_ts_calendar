@@ -1,9 +1,10 @@
 import { DAY_OF_THE_WEEK } from "@/constants/dayOfTheWeek";
 import clsx from "clsx";
 import { isToday } from "date-fns";
+import ScheduleList from "./ScheduleList";
 
 type PropsType = {
-  calendar: (Date | undefined)[];
+  calendar: Date[];
 };
 const WeeklyCalendar = (props: PropsType) => {
   const { calendar } = props;
@@ -25,6 +26,7 @@ const WeeklyCalendar = (props: PropsType) => {
           >
             {day?.getDate()}
           </div>
+          <ScheduleList day={day} />
         </div>
       ))}
     </main>

@@ -30,7 +30,7 @@ import { createScheduleSchema } from "@/schemas/scheduleSchemas";
 import z from "zod";
 
 const CreateScheduleModal = () => {
-  const { schedules, setSchedules } = useSchedule();
+  const { createSchedule } = useSchedule();
 
   const form = useForm({
     resolver: zodResolver(createScheduleSchema),
@@ -38,7 +38,7 @@ const CreateScheduleModal = () => {
   });
 
   const onSubmit = (data: z.infer<typeof createScheduleSchema>) => {
-    setSchedules([...schedules, { id: crypto.randomUUID(), ...data }]);
+    createSchedule(data);
   };
 
   return (
