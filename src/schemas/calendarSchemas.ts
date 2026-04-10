@@ -65,3 +65,8 @@ export const pathParamsDateSchema = z
   .refine((date) => isValid(date), {
     message: "正しく日付に変換できませんでした",
   });
+
+export const pathParamsMonthViewSchema = z.object({
+  year: pathParamsYearSchema,
+  month: pathParamsMonthSchema,
+});

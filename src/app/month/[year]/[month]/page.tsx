@@ -1,10 +1,7 @@
 import Header from "@/components/Header";
 import MonthlyCalendar from "@/components/MonthlyCalendar";
 import Sidebar from "@/components/Sidebar";
-import {
-  pathParamsMonthSchema,
-  pathParamsYearSchema,
-} from "@/schemas/calendarSchemas";
+import { pathParamsMonthViewSchema } from "@/schemas/calendarSchemas";
 import {
   getMonthlyCalendar,
   getMonthNextURL,
@@ -18,23 +15,24 @@ type PropsType = {
 const MonthPage = async ({ params }: PropsType) => {
   // パスパラメータのバリデーション処理
   const { year, month } = await params;
-  const parsedYear = pathParamsYearSchema.safeParse(year);
 
-  if (!parsedYear.success) {
-    console.error(parsedYear.error);
+  const parsedDate = pathParamsMonthViewSchema.safeParse({ year, month });
+
+  if (!parsedDate.success) {
+    console.error(parsedDate.error);
     throw new Error();
   }
 
-  const parsedMonth = pathParamsMonthSchema.safeParse(month);
+  const calendar = getMonthlyCalendar(
+    parsedDate.data.year,
+    parsedDate.data.month,
+  );
 
-  if (!parsedMonth.success) {
-    console.error(parsedMonth.error);
-    throw new Error();
-  }
-
-  const calendar = getMonthlyCalendar(parsedYear.data, parsedMonth.data);
-
-  const paramsDate = new Date(parsedYear.data, parsedMonth.data - 1, 1);
+  const paramsDate = new Date(
+    parsedDate.data.year,
+    parsedDate.data.month - 1,
+    1,
+  );
 
   const prevURL = getMonthPrevURL(paramsDate);
   const nextURL = getMonthNextURL(paramsDate);
