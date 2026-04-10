@@ -40,28 +40,28 @@ export const pathParamsDaySchema = z
 // 2月30日のような存在しない日付か確認する
 export const pathParamsDateSchema = z
   .object({
-    yyyy: pathParamsYearSchema,
-    m: pathParamsMonthSchema,
-    d: pathParamsDaySchema,
+    year: pathParamsYearSchema,
+    month: pathParamsMonthSchema,
+    day: pathParamsDaySchema,
   })
   .refine(
     (pathParamsDate) => {
       const newDate = new Date(
-        pathParamsDate.yyyy,
-        pathParamsDate.m - 1,
-        pathParamsDate.d,
+        pathParamsDate.year,
+        pathParamsDate.month - 1,
+        pathParamsDate.day,
       );
 
       // Date型の仕様で2026-2-30を指定してインスタンスを生成すると、2026-3-2が返却されるため生成された値と入力値が同じか確認する
       return (
-        newDate.getFullYear() === pathParamsDate.yyyy &&
-        newDate.getMonth() === pathParamsDate.m - 1 &&
-        newDate.getDate() === pathParamsDate.d
+        newDate.getFullYear() === pathParamsDate.year &&
+        newDate.getMonth() === pathParamsDate.month - 1 &&
+        newDate.getDate() === pathParamsDate.day
       );
     },
     { message: "存在しない日付が入力されています" },
   )
-  .transform((val) => new Date(val.yyyy, val.m - 1, val.d))
+  .transform((val) => new Date(val.year, val.month - 1, val.day))
   .refine((date) => isValid(date), {
     message: "正しく日付に変換できませんでした",
   });

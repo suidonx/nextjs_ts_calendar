@@ -10,13 +10,13 @@ import {
 } from "@/utils/calendar";
 
 type PropsType = {
-  params: Promise<{ yyyy: string; m: string; d: string }>;
+  params: Promise<{ year: string; month: string; day: string }>;
 };
 
 const WeekPage = async ({ params }: PropsType) => {
   // パスパラメータのバリデーション処理
-  const { yyyy, m, d } = await params;
-  const parsedDate = pathParamsDateSchema.safeParse({ yyyy, m, d });
+  const { year, month, day } = await params;
+  const parsedDate = pathParamsDateSchema.safeParse({ year, month, day });
 
   if (!parsedDate.success) {
     console.error(parsedDate.error);
@@ -25,12 +25,15 @@ const WeekPage = async ({ params }: PropsType) => {
 
   const paramsDate = parsedDate.data;
 
-  const year = paramsDate.getFullYear();
-  const month = paramsDate.getMonth() + 1;
-  const day = paramsDate.getDate();
-
-  const monthlyCalendar = getMonthlyCalendar(year, month);
-  const weeklyCalendar = getWeeklyCalendar(year, month, day);
+  const monthlyCalendar = getMonthlyCalendar(
+    paramsDate.getFullYear(),
+    paramsDate.getMonth(),
+  );
+  const weeklyCalendar = getWeeklyCalendar(
+    paramsDate.getFullYear(),
+    paramsDate.getMonth() + 1,
+    paramsDate.getDate(),
+  );
 
   const prevURL = getWeekPrevURL(paramsDate);
   const nextURL = getWeeKNextURL(paramsDate);

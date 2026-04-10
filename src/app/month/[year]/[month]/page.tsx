@@ -12,31 +12,29 @@ import {
 } from "@/utils/calendar";
 
 type PropsType = {
-  params: Promise<{ yyyy: string; m: string }>;
+  params: Promise<{ year: string; month: string }>;
 };
 
 const MonthPage = async ({ params }: PropsType) => {
   // パスパラメータのバリデーション処理
-  const { yyyy, m } = await params;
-  const parsedYear = pathParamsYearSchema.safeParse(yyyy);
+  const { year, month } = await params;
+  const parsedYear = pathParamsYearSchema.safeParse(year);
 
   if (!parsedYear.success) {
     console.error(parsedYear.error);
     throw new Error();
   }
 
-  const parsedMonth = pathParamsMonthSchema.safeParse(m);
+  const parsedMonth = pathParamsMonthSchema.safeParse(month);
 
   if (!parsedMonth.success) {
     console.error(parsedMonth.error);
     throw new Error();
   }
 
-  const year = parsedYear.data;
-  const month = parsedMonth.data;
-  const calendar = getMonthlyCalendar(year, month);
+  const calendar = getMonthlyCalendar(parsedYear.data, parsedMonth.data);
 
-  const paramsDate = new Date(year, month - 1, 1);
+  const paramsDate = new Date(parsedYear.data, parsedMonth.data - 1, 1);
 
   const prevURL = getMonthPrevURL(paramsDate);
   const nextURL = getMonthNextURL(paramsDate);
