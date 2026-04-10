@@ -15,25 +15,23 @@ type PropsType = {
 
 const WeekPage = async ({ params }: PropsType) => {
   // パスパラメータのバリデーション処理
-  const { year, month, day } = await params;
-  const parsedDate = pathParamsDateSchema.safeParse({ year, month, day });
+  const paramsData = await params;
+
+  const parsedDate = pathParamsDateSchema.safeParse({
+    year: paramsData.year,
+    month: paramsData.month,
+    day: paramsData.day,
+  });
 
   if (!parsedDate.success) {
     console.error(parsedDate.error);
     throw new Error();
   }
 
-  const paramsDate = parsedDate.data;
+  const { date: paramsDate, year, month, day } = parsedDate.data;
 
-  const monthlyCalendar = getMonthlyCalendar(
-    paramsDate.getFullYear(),
-    paramsDate.getMonth(),
-  );
-  const weeklyCalendar = getWeeklyCalendar(
-    paramsDate.getFullYear(),
-    paramsDate.getMonth() + 1,
-    paramsDate.getDate(),
-  );
+  const monthlyCalendar = getMonthlyCalendar(year, month);
+  const weeklyCalendar = getWeeklyCalendar(year, month, day);
 
   const prevURL = getWeekPrevURL(paramsDate);
   const nextURL = getWeeKNextURL(paramsDate);

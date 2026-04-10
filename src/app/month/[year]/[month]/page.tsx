@@ -14,25 +14,23 @@ type PropsType = {
 
 const MonthPage = async ({ params }: PropsType) => {
   // パスパラメータのバリデーション処理
-  const { year, month } = await params;
+  const paramsData = await params;
 
-  const parsedDate = pathParamsMonthViewSchema.safeParse({ year, month });
+  const parsedDate = pathParamsMonthViewSchema.safeParse({
+    year: paramsData.year,
+    month: paramsData.month,
+  });
 
   if (!parsedDate.success) {
     console.error(parsedDate.error);
     throw new Error();
   }
 
-  const calendar = getMonthlyCalendar(
-    parsedDate.data.year,
-    parsedDate.data.month,
-  );
+  const { year, month } = parsedDate.data;
 
-  const paramsDate = new Date(
-    parsedDate.data.year,
-    parsedDate.data.month - 1,
-    1,
-  );
+  const calendar = getMonthlyCalendar(year, month);
+
+  const paramsDate = new Date(year, month - 1, 1);
 
   const prevURL = getMonthPrevURL(paramsDate);
   const nextURL = getMonthNextURL(paramsDate);

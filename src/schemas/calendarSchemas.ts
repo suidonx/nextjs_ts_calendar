@@ -61,8 +61,13 @@ export const pathParamsDateSchema = z
     },
     { message: "存在しない日付が入力されています" },
   )
-  .transform((val) => new Date(val.year, val.month - 1, val.day))
-  .refine((date) => isValid(date), {
+  .transform((val) => ({
+    date: new Date(val.year, val.month - 1, val.day),
+    year: val.year,
+    month: val.month,
+    day: val.day,
+  }))
+  .refine((val) => isValid(val.date), {
     message: "正しく日付に変換できませんでした",
   });
 
