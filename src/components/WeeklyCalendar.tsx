@@ -1,0 +1,36 @@
+import { DAY_OF_THE_WEEK } from "@/constants/dayOfTheWeek";
+import clsx from "clsx";
+import { isToday } from "date-fns";
+import ScheduleList from "./ScheduleList";
+
+type PropsType = {
+  calendar: Date[];
+};
+const WeeklyCalendar = (props: PropsType) => {
+  const { calendar } = props;
+
+  return (
+    <main className="mb-5 grid flex-1 grid-cols-7 rounded-full">
+      {calendar.map((day, index) => (
+        <div key={index} className="overflow-y-auto border bg-white pt-1">
+          <div className="mt-1 text-center text-[12px]">
+            {DAY_OF_THE_WEEK[index]}
+          </div>
+          <div
+            className={clsx(
+              "mx-auto mt-2 size-10 items-center text-center text-2xl leading-10",
+              day instanceof Date && "hover:rounded-full hover:bg-blue-100",
+              isToday(day ?? "") &&
+                "rounded-full bg-blue-800 text-white hover:bg-blue-800",
+            )}
+          >
+            {day?.getDate()}
+          </div>
+          <ScheduleList day={day} />
+        </div>
+      ))}
+    </main>
+  );
+};
+
+export default WeeklyCalendar;
