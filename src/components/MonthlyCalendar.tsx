@@ -1,3 +1,5 @@
+"use client";
+
 import { DAY_OF_THE_WEEK } from "@/constants/dayOfTheWeek";
 import clsx from "clsx";
 import { isToday } from "date-fns";
