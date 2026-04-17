@@ -1,7 +1,9 @@
 ## 概要
 Next.jsとTypeScriptを使用して開発したカレンダーアプリです。  
 
-https://nextjs-ts-calendar-6sdz0xp6h-suidonxs-projects.vercel.app
+下記ページよりご確認ください
+
+https://github.com/suidonx/nextjs_ts_calendar/deployments/Production
 
 ## 技術スタック
 - Next.js 16.1.6
