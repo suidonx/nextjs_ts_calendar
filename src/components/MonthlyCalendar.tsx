@@ -24,7 +24,8 @@ const MonthlyCalendar = (props: PropsType) => {
             className={clsx(
               "mx-auto size-7 text-center text-[11px] leading-7 font-bold",
               day instanceof Date && "hover:rounded-full hover:bg-blue-100",
-              isToday(day ?? "") &&
+              day instanceof Date &&
+                isToday(day) &&
                 "rounded-full bg-blue-800 text-white hover:bg-blue-800",
             )}
           >
